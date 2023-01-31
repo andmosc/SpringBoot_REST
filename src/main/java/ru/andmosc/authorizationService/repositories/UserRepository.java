@@ -4,8 +4,6 @@ import org.springframework.stereotype.Repository;
 import ru.andmosc.authorizationService.dto.UserPasswordDTO;
 import ru.andmosc.authorizationService.models.Authorities;
 import ru.andmosc.authorizationService.models.User;
-import ru.andmosc.authorizationService.util.InvalidPassword;
-
 
 import java.util.List;
 import java.util.Map;
@@ -15,30 +13,24 @@ import static ru.andmosc.authorizationService.models.Authorities.*;
 
 @Repository
 public class UserRepository {
-    private final Map<String, User> users;
+    private Map<String, User> users = new ConcurrentHashMap<>();
 
     public UserRepository() {
-        users = new ConcurrentHashMap<>();
-        addUser(new User("And", "Moscovets", "Mosc",
+        users.put("And",
+                new User("And", "Moscovets", "And",
                 "123456", "email@mail.ru", List.of(WRITE, DELETE)));
+        users.put("Max",
+                new User("Max", "Ivanov", "Max",
+                "64321", "email@gmail.ru", List.of(RED)));
     }
 
     public UserRepository(Map<String, User> users) {
         this.users = users;
     }
 
-    private void addUser(User user) {
-        users.put(user.getLogin(), user);
-    }
-
     public List<Authorities> getUserAuthorities(UserPasswordDTO userPasswordDTO) {
-        User user = users.get(userPasswordDTO.getLogin());
-        if (user != null) {
-            if (!user.wordPasses(userPasswordDTO.getPassword())) {
-                throw new InvalidPassword("Invalid password");
-            }
-            return user.getAuthoritiesList();
-        }
-        return null;
+        return users.values().stream().filter(user -> user.getLogin().equals(userPasswordDTO.getLogin())
+                && user.getPassword().equals(userPasswordDTO.getPassword())).findAny()
+                .orElse(new User()).getAuthoritiesList();
     }
 }

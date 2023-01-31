@@ -5,10 +5,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 public class UserPasswordDTO {
-    @NotBlank(message = "login should not be empty")
+    @NotBlank(message = "login must not contain only spaces")
+    @NotEmpty(message = "password should not be empty")
     @Size(min = 2, max = 30, message = "login should be between 2 and 30 characters")
     private String login;
-    @NotBlank(message = "password should not be empty")
+    @NotBlank(message = "password must not contain only spaces")
     @NotEmpty(message = "password should not be empty")
     @Size(min = 5, max = 30, message = "password should be between 5 and 30 characters")
     private String password;

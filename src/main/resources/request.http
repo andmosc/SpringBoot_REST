@@ -1,0 +1,11 @@
+###
+GET http://localhost:8080/authorize?login=Max&password=64321
+
+###
+GET http://localhost:8080/authorize?login=MaxX&password=64321
+
+###
+GET http://localhost:8080/authorize?login=&password=64321
+
+###
+GET http://localhost:8080/authorize?login=Max

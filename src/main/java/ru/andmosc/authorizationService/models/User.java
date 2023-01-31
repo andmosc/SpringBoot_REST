@@ -10,6 +10,9 @@ public class User {
     private String email;
     private List<Authorities> authoritiesList;
 
+    public User() {
+    }
+
     public User(String name, String surname, String login, String password, String email, List<Authorities> authoritiesList) {
         this.name = name;
         this.surname = surname;
@@ -63,7 +66,8 @@ public class User {
         this.authoritiesList = authoritiesList;
     }
 
-    public boolean wordPasses(String password) {
-        return this.password.equals(password);
+    public String getPassword() {
+        return password;
     }
+
 }
