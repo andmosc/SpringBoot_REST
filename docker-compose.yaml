@@ -1,0 +1,7 @@
+version: "1"
+
+services:
+  appserv:
+    image: 'authservice:latest'
+    ports:
+      - 8080
